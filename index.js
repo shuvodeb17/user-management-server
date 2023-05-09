@@ -45,20 +45,27 @@ async function run() {
             res.send(result)
         })
 
-        app.put('/user/:id', async (req,res)=>{
+        app.put('/user/:id', async (req, res) => {
             const id = req.params.id;
             const updateUser = req.body;
-            const filter = {_id: new ObjectId(id)}
+            const filter = { _id: new ObjectId(id) }
             const options = { upsert: true };
             const updated = {
-                $set:{
+                $set: {
                     name: updateUser.name,
                     email: updateUser.email,
                     gender: updateUser.gender,
                     status: updateUser.status
                 }
             }
-            const result = await userCollection.updateOne(filter, updated,options)
+            const result = await userCollection.updateOne(filter, updated, options)
+            res.send(result)
+        })
+
+        app.delete('/user/:id', async (req, res) => {
+            const id = req.params.id
+            const query = { _id: new ObjectId(id) }
+            const result = await userCollection.deleteOne(query)
             res.send(result)
         })
 
